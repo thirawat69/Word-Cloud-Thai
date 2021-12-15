@@ -1,0 +1,16 @@
+Working with mongoDB Atlas using Python
+https://www.youtube.com/watch?v=VQnmcBnguPY&t=521s
+https://gist.github.com/nikhilkumarsingh/2c39d161f3d5fe4a40c24d7c9a7a11c3
+
+SSL Handshake issue with Pymongo on Python3
+https://stackoverflow.com/questions/54484890/ssl-handshake-issue-with-pymongo-on-python3
+
+Python Mongodb – Delete_many()
+https://www.geeksforgeeks.org/python-mongodb-delete_many/
+
+Lab 9 Collect #Tweets into #MongoDB with #Python
+https://www.youtube.com/watch?v=rm0mJP1P4eE
+https://github.com/xbwei/Data-Mining-on-Social-Media/blob/master/MongoDB/Collect_Tweets_into_MongoDB.ipynb
+
+สร้าง Word Cloud ภาษาไทย ด้วย Python
+https://www.youtube.com/watch?v=qSWT0-s-CQA
