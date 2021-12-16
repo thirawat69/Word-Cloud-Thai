@@ -1,15 +1,26 @@
 import pymongo
 from pymongo import MongoClient
-import json
+
 import tweepy
 import twitter
-from pprint import pprint
+
 import configparser
-import pandas as pd
+
 import certifi
+import time
+from pythainlp import word_tokenize
+from pythainlp.corpus import get_corpus # for getting stopwords
 
-def cullecttweet( q, count):
+from wordcloud import WordCloud
 
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+# %matplotlib inline
+# %config InlineBackend.figure_format='retina'
+
+def collecttweet( q, count):
     # Load the Authorization Info
     config = configparser.ConfigParser()
     config.read('config.ini')
@@ -20,16 +31,12 @@ def cullecttweet( q, count):
     OATH_TOKEN_SECRET = config['mytwitter']['access_secrete']
     mongod_connect    = config['mymongo']['connection']
 
-
-
     # Connect to the MongoDB Cluster
     ca = certifi.where()                                 # Fix SSR error
 
     client = MongoClient(mongod_connect , tlsCAFile=ca)  # connect to mongo and fix SSL problem with tlsCAFile=ca
     db = client.Twitter                                  # use or create a database named Twitter
     tweet_collection = db.new_tweet_collection           # use or create a collection named tweet_collection
-
-
 
     # Authorize the Stream API
     stream_auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
@@ -50,8 +57,6 @@ def cullecttweet( q, count):
     #q = "#ผู้ว่ากทม"                               # define the keywords, tweets contain election
     geocode = "38.4392897,-78.9412224,50mi"      # defin the location, in Harrisonburg, VA
 
-
-
     # Search and Collect data
     start = tweet_collection.count_documents({}) # จำนวนคอลเลกชั่นที่มีในปัจจุบัน
     since_id_old = start
@@ -61,9 +66,8 @@ def cullecttweet( q, count):
     while(since_id_new != since_id_old):
         search_results = rest_api.search.tweets( count=count,q=q) #you can use both q and geocode
         statuses = search_results["statuses"]
-
         for statuse in statuses:
-            try:# time sleep to slow request
+            try:# time sleep to slow request 
                 if tweet_collection.count_documents({})%100==0:
                     time.sleep(5)
                 # fetching the status
@@ -95,8 +99,7 @@ def cullecttweet( q, count):
             except:
                 pass
 
-
-
+     
     # Pull data form tweet_collection to variable tweet_json
     tweet_json = list(tweet_collection.find())
 
@@ -106,13 +109,10 @@ def cullecttweet( q, count):
     for i in range(tweet_collection.count_documents({})):
         all_tweet += cutword(tweet_json[i]['full_text'])+"\n"
 
-
     # drop collection
     tweet_collection.drop()
     
-    return(all_tweet)
-
-
+    return all_tweet
 
 
 def cutword(wordinput):
@@ -136,3 +136,43 @@ def cutword(wordinput):
     aa=cutTweet.replace(substring,"")
     # print(aa)
     return aa
+
+##########################################################
+
+def wordcloudThai(all_tweet):
+
+    words = word_tokenize(all_tweet)
+    print(words)
+
+    all_words = ' '.join(words).lower().strip()
+
+    # stop word
+    stopwords = {'\n'} # set
+    print(type(stopwords))
+    print(stopwords)
+
+    wordcloud = WordCloud(
+    #     font_path='c:/windows/fonts/browalia.ttc',
+    #     font_path='C:/Users/thirawat/Desktop/word_cloud_thai/font_path/Fahkwang-Medium.ttf',
+    #     font_path='font_path/Kanit-Black.ttf',
+        font_path='font_path/Fahkwang-Medium.ttf',
+        regexp='[ก-๙]+',
+
+        stopwords=stopwords,
+        width=2000, height=1000,
+
+        prefer_horizontal=.9,
+        max_words=20, 
+
+    #     colormap='viridis', # default matplotlib colormap
+        colormap='tab20c',
+    #     colormap='plasma',
+        background_color = 'white').generate(all_words)
+    plt.figure(figsize = (10, 9))
+    plt.imshow(wordcloud)
+    # plt.savefig('myfig')
+    plt.axis('off')
+    plt.tight_layout(pad=0)
+    plt.show()
+
+    # return wordcloud
