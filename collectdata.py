@@ -21,7 +21,7 @@ import numpy as np
 # %config InlineBackend.figure_format='retina'
 
 def collecttweet( q, count):
-    # Load the Authorization Info
+    # Load the Authorization Info from config.ini
     config = configparser.ConfigParser()
     config.read('config.ini')
 
@@ -44,18 +44,13 @@ def collecttweet( q, count):
 
     strem_api = tweepy.API(stream_auth)
 
-
-
     # Authorize the REST API 
     rest_auth = twitter.oauth.OAuth(OAUTH_TOKEN,OATH_TOKEN_SECRET,CONSUMER_KEY,CONSUMER_SECRET)
     rest_api = twitter.Twitter(auth=rest_auth)
 
-
-
     # Define the query for the REST API
     #count = 10                                  # number of returned tweets
     #q = "#ผู้ว่ากทม"                               # define the keywords, tweets contain election
-    geocode = "38.4392897,-78.9412224,50mi"      # defin the location, in Harrisonburg, VA
 
     # Search and Collect data
     start = tweet_collection.count_documents({}) # จำนวนคอลเลกชั่นที่มีในปัจจุบัน
@@ -133,9 +128,9 @@ def cutword(wordinput):
     substring = cutTweet[https:endpoint+1]
     # print(substring)
 
-    aa=cutTweet.replace(substring,"")
+    wordcuted=cutTweet.replace(substring,"")
     # print(aa)
-    return aa
+    return wordcuted
 
 ##########################################################
 
@@ -152,27 +147,24 @@ def wordcloudThai(all_tweet):
     print(stopwords)
 
     wordcloud = WordCloud(
-    #     font_path='c:/windows/fonts/browalia.ttc',
-    #     font_path='C:/Users/thirawat/Desktop/word_cloud_thai/font_path/Fahkwang-Medium.ttf',
-    #     font_path='font_path/Kanit-Black.ttf',
+        # font_path 
         font_path='font_path/Fahkwang-Medium.ttf',
         regexp='[ก-๙]+',
-
+        #use stop word
         stopwords=stopwords,
+        #size picture
         width=2000, height=1000,
-
+        #text horizontal 90%,text vertical 10%
         prefer_horizontal=.9,
+        #จำนวนคำที่มีความถี่มากที่สุดที่นำมาสร้าง wordcloud
         max_words=20, 
-
-    #     colormap='viridis', # default matplotlib colormap
+        #type of color
         colormap='tab20c',
-    #     colormap='plasma',
+        #bg color
         background_color = 'white').generate(all_words)
+    #plot image
     plt.figure(figsize = (10, 9))
     plt.imshow(wordcloud)
-    # plt.savefig('myfig')
     plt.axis('off')
     plt.tight_layout(pad=0)
     plt.show()
-
-    # return wordcloud
