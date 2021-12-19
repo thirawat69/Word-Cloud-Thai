@@ -42,7 +42,7 @@ def collecttweet( q, count):
     stream_auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     stream_auth.set_access_token(OAUTH_TOKEN, OATH_TOKEN_SECRET)
 
-    strem_api = tweepy.API(stream_auth)
+    stream_api = tweepy.API(stream_auth)
 
     # Authorize the REST API 
     rest_auth = twitter.oauth.OAuth(OAUTH_TOKEN,OATH_TOKEN_SECRET,CONSUMER_KEY,CONSUMER_SECRET)
@@ -66,11 +66,11 @@ def collecttweet( q, count):
                 if tweet_collection.count_documents({})%100==0:
                     time.sleep(5)
                 # fetching the status
-                tweet = strem_api.get_status(statuse['id_str'], tweet_mode = "extended")
+                tweet = stream_api.get_status(statuse['id_str'], tweet_mode = "extended")
                 
                 # fetching the text attribute
                 full_text  = tweet.full_text  
-
+                
                 # collection stucture
                 new_tweet = {
                     'id_doc': since_id_old,
@@ -135,26 +135,30 @@ def cutword(wordinput):
 ##########################################################
 
 def wordcloudThai(all_tweet):
-
+    
+    #แบ่งคำ
     words = word_tokenize(all_tweet)
     print(words)
 
+    #ใช้ช่องว่างในการแยกคำ
     all_words = ' '.join(words).lower().strip()
 
-    # stop word
-    stopwords = {'\n'} # set
+    # stop word  เอา word ออก
+    stopwords = {'\n','.'} # set
     print(type(stopwords))
     print(stopwords)
 
+    #สร้าง object ของ wordcloud
     wordcloud = WordCloud(
         # font_path 
         font_path='font_path/Fahkwang-Medium.ttf',
-        regexp='[ก-๙]+',
+        #regular expression สระ 
+        regexp=r"[ก-๙a-zA-Z']+",
         #use stop word
         stopwords=stopwords,
         #size picture
         width=2000, height=1000,
-        #text horizontal 90%,text vertical 10%
+        #text horizontal(นอน) 90%,text vertical 10%
         prefer_horizontal=.9,
         #จำนวนคำที่มีความถี่มากที่สุดที่นำมาสร้าง wordcloud
         max_words=20, 

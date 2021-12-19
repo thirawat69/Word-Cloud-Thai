@@ -32,6 +32,4 @@ Entry(tkWindow,textvariable=Num,width=60,).place(x=250,y=150)
 keyword = Label(text="Hashtag",font=24).place(x=150,y=100)
 keyword = Label(text="document",font=24).place(x=150,y=150)
 
-
-
 tkWindow.mainloop()
