@@ -14,8 +14,9 @@ Num = IntVar()
 #ใช้เรียก collecttweet หลังจากกดปุ่ม submit
 def textto():
     message = collectData.get()
-    count = Num.get()
-    allTweet = collectdata.collecttweet( message, count)
+    # wordmodify=message.split(",",999)
+    maxtweet = Num.get()
+    allTweet = collectdata.collecttweet( message, maxtweet)
     collectdata.wordcloudThai(allTweet)
 
 #ปุ่ม submit    
