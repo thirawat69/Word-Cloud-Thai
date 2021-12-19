@@ -1,3 +1,6 @@
+Tweepy Doc
+https://docs.tweepy.org/en/v3.9.0/extended_tweets.html?highlight=full#examples
+
 Working with mongoDB Atlas using Python
 https://www.youtube.com/watch?v=VQnmcBnguPY&t=521s
 https://gist.github.com/nikhilkumarsingh/2c39d161f3d5fe4a40c24d7c9a7a11c3
@@ -14,3 +17,4 @@ https://github.com/xbwei/Data-Mining-on-Social-Media/blob/master/MongoDB/Collect
 
 สร้าง Word Cloud ภาษาไทย ด้วย Python
 https://www.youtube.com/watch?v=qSWT0-s-CQA
+
