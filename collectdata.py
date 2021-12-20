@@ -1,17 +1,22 @@
+# pip install pymongo
+# pip install pymongo[srv]
+# pip install dnspython
+# pip install tweepy==3.10.0
+# pip install twitter
+# pip install certifi
+# pip install wordcloud
+# conda install -c conda-forge wordcloud
+# pip install pythainlp
+
 import pymongo
 from pymongo import MongoClient
-
 import tweepy
 import twitter
-
 import configparser
-
 import certifi
 from pythainlp import word_tokenize
 from pythainlp.corpus import get_corpus # for getting stopwords
-
 from wordcloud import WordCloud
-
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -118,7 +123,7 @@ def collecttweet( keywords, max_tweets):
         
     # Connect to a streaming API
     # number of returned tweets
-    max_tweets = 10    
+    # max_tweets = 10    
     # define the keywords, tweets contain election                                
     # keywords = ["#ThreeManDown",
     #     "อนุทิน"
@@ -127,7 +132,7 @@ def collecttweet( keywords, max_tweets):
     # geocode = "38.4392897,-78.9412224,50mi" 
     stream_listener = StreamListener(max_tweets)
     stream = tweepy.Stream(auth=stream_api.auth, listener=stream_listener)
-    stream.filter(track=keywords)
+    stream.filter(track=keywords,languages=["th"])
 
     # Pull data form tweet_collection to variable tweet_json
     tweet_json = list(tweet_collection.find())
@@ -179,8 +184,8 @@ def wordcloudThai(all_tweet):
 
     # stop word  เอา word ออก
     stopwords = {'\n','.','\\',"\'",'/','#'} # set
-    print(type(stopwords))
-    print(stopwords)
+    # print(type(stopwords))
+    # print(stopwords)
 
     #สร้าง object ของ wordcloud
     wordcloud = WordCloud(
